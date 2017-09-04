@@ -1,0 +1,41 @@
+<xml>
+
+ <set name="RPISDK" value="c:/SysGCC/Raspberry/" unless="RPISDK" />
+ <path name="${RPISDK}/bin" />
+ <set name="EXEPREFIX" value="arm-linux-gnueabihf" />
+ <set name="HXCPP_M64" value="1" />
+
+
+<compiler id="winrpi" exe="${EXEPREFIX}-g++.exe" >
+
+  <flag value="-c"/>
+  <cppflag value="-frtti"/>
+  <flag value="-g" if="debug"/>
+  <flag value="-O2" unless="debug"/>
+  <flag value="-DHX_LINUX"/>
+  <flag value="-DHX_RPI"/>
+  <include name="toolchain/common-defines.xml" />
+  <flag value="-I${HXCPP}/include"/>
+  <flag value="-Wno-invalid-offsetof"/>
+  <objdir value="obj/rpi${OBJEXT}/"/>
+  <outflag value="-o"/>
+  <ext value=".o"/>
+
+</compiler>
+
+
+<linker id="exe" exe="${EXEPREFIX}-g++.exe">
+  <ext value=""/>
+   <outflag value="-o"/>
+   <lib name="-ldl"/>
+   <lib name="-lc"/>
+   <lib name="-lpthread"/>
+   <lib name="-lm"/>
+</linker>
+
+<include name="${HXCPP}/toolchain/gcc-toolchain.xml" />
+
+
+</xml>
+
+
