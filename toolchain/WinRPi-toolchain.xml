@@ -1,10 +1,12 @@
 <xml>
 
  <set name="RPISDK" value="c:/SysGCC/Raspberry/" unless="RPISDK" />
+ <path name="${RPISDK}/arm-linux-gnueabihf/bin" />
  <path name="${RPISDK}/bin" />
  <set name="EXEPREFIX" value="arm-linux-gnueabihf" />
  <set name="HXCPP_M64" value="1" />
 
+<include name="${HXCPP}/toolchain/gcc-toolchain.xml" />
 
 <compiler id="winrpi" exe="${EXEPREFIX}-g++.exe" >
 
@@ -14,26 +16,48 @@
   <flag value="-O2" unless="debug"/>
   <flag value="-DHX_LINUX"/>
   <flag value="-DHX_RPI"/>
+  <flag value="-DRASPBERRYPI"/>
+  <flag value="-DHXCPP_ARM64"/>
   <include name="toolchain/common-defines.xml" />
   <flag value="-I${HXCPP}/include"/>
-  <flag value="-Wno-invalid-offsetof"/>
+  <cppflag value="-Wno-invalid-offsetof"/>
   <objdir value="obj/rpi${OBJEXT}/"/>
   <outflag value="-o"/>
   <ext value=".o"/>
 
 </compiler>
 
+<linker id="static_link" exe="ar" replace="true" >
+  <ext value="${LIBEXT}"/>
+
+  <exe name="${EXEPREFIX}-ar" if="EXEPREFIX" />
+  <exe name="${HXCPP_AR}" if="HXCPP_AR" />
+  <outflag value="-cr "/>
+  <recreate value="1" />
+
+  <!-- <expandAr value="1" if="linux" /> -->
+</linker>
+
 
 <linker id="exe" exe="${EXEPREFIX}-g++.exe">
   <ext value=""/>
-   <outflag value="-o"/>
+   <outflag value="-o "/>
    <lib name="-ldl"/>
    <lib name="-lc"/>
    <lib name="-lpthread"/>
    <lib name="-lm"/>
 </linker>
 
-<include name="${HXCPP}/toolchain/gcc-toolchain.xml" />
+
+<linker id="dll" exe="${EXEPREFIX}-g++.exe">
+  <ext value=".so"/>
+   <outflag value="-o"/>
+   <flag value="-shared"/>
+   <lib name="-ldl"/>
+   <lib name="-lc"/>
+   <lib name="-lpthread"/>
+   <lib name="-lm"/>
+</linker>
 
 
 </xml>
