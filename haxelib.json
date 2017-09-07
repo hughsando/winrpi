@@ -1,0 +1,10 @@
+{
+  "name": "winrpi",
+  "license": "MIT",
+  "tags": [ "hxcpp", "haxe", "rpi" ],
+  "description": "Toolchain for compiling for Raspberry Pi from Windows",
+  "version": "1.0.0",
+  "releasenote": "First release",
+  "contributors": [ "gamehaxe" ],
+  "dependencies": {}
+}
